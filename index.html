@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<title>30-Min Calisthenics</title>
+
+<!-- Standard PWA manifest (Android/Chrome) -->
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#16171b" />
+
+<!-- iOS-specific PWA tags — Safari does not read manifest.json for these -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Workout" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ============ HOME SCREEN ============ -->
+<section class="screen" id="screen-home" data-screen="home">
+  <header class="day-picker" id="day-picker">
+    <button class="day-pill" data-day="tuesday">TUE</button>
+    <button class="day-pill" data-day="wednesday">WED</button>
+    <button class="day-pill" data-day="thursday">THU</button>
+    <button class="day-pill" data-day="weekend">SAT</button>
+  </header>
+
+  <div class="home-content">
+    <p class="eyebrow-muted" id="home-day-label">Tuesday</p>
+    <h1 class="display-huge" id="home-day-name">Legs &amp; Core</h1>
+    <p class="home-sub" id="home-day-sub">Soccer-specific circuit</p>
+
+    <button class="start-button" id="start-workout-btn">Start Workout</button>
+
+    <dl class="breakdown">
+      <div class="breakdown-row">
+        <dt>Warm-up</dt><dd>5 min</dd>
+      </div>
+      <div class="breakdown-row">
+        <dt>Circuit</dt><dd>20 min</dd>
+      </div>
+      <div class="breakdown-row">
+        <dt>Finisher</dt><dd>5 min</dd>
+      </div>
+    </dl>
+
+    <p class="shoulder-note">Shoulder-safe program. Stop and modify if anything causes pain. Not medical advice.</p>
+  </div>
+</section>
+
+<!-- ============ WORKOUT PLAYER SCREEN ============ -->
+<section class="screen" id="screen-player" data-screen="player" hidden>
+  <div class="player-top">
+    <button class="icon-btn" id="player-close-btn" aria-label="Close workout">&times;</button>
+    <p class="round-label" id="round-label">Round 1 of 4</p>
+  </div>
+
+  <div class="illustration-frame">
+    <img id="exercise-illustration" src="" alt="" />
+  </div>
+
+  <h2 class="exercise-name" id="exercise-name">Goblet Squat</h2>
+
+  <div class="timer-wrap">
+    <span class="timer-number" id="timer-number">0:40</span>
+    <span class="timer-state" id="timer-state" data-state="work">WORK</span>
+  </div>
+
+  <div class="player-controls">
+    <button class="control-btn" id="pause-btn">Pause</button>
+    <button class="control-btn control-btn-primary" id="skip-btn">Skip</button>
+  </div>
+</section>
+
+<!-- ============ PROGRESS LOG SCREEN ============ -->
+<section class="screen" id="screen-log" data-screen="log" hidden>
+  <h1 class="screen-title">Progress</h1>
+  <ul class="log-list" id="log-list">
+    <!-- entries injected by js/progress.js -->
+    <li class="log-empty">No workouts logged yet.</li>
+  </ul>
+</section>
+
+<!-- ============ SETTINGS SCREEN ============ -->
+<section class="screen" id="screen-settings" data-screen="settings" hidden>
+  <h1 class="screen-title">Settings</h1>
+
+  <div class="settings-row">
+    <label for="sound-toggle">Sound cues</label>
+    <input type="checkbox" id="sound-toggle" checked />
+  </div>
+
+  <div class="settings-row">
+    <label for="rounds-input">Rounds per circuit</label>
+    <input type="number" id="rounds-input" value="4" min="1" max="8" />
+  </div>
+
+  <div class="settings-row">
+    <label for="work-seconds-input">Work seconds</label>
+    <input type="number" id="work-seconds-input" value="40" min="10" max="120" />
+  </div>
+
+  <div class="settings-row">
+    <label for="rest-seconds-input">Rest seconds</label>
+    <input type="number" id="rest-seconds-input" value="20" min="5" max="60" />
+  </div>
+</section>
+
+<!-- ============ BOTTOM NAV ============ -->
+<nav class="bottom-nav" id="bottom-nav">
+  <button class="nav-btn is-active" data-target="home">Home</button>
+  <button class="nav-btn" data-target="log">Log</button>
+  <button class="nav-btn" data-target="settings">Settings</button>
+</nav>
+
+<!-- App scripts. workouts.js and timer.js are built by other collaborators;
+     app.js wires everything together once those land. -->
+<script src="js/workouts.js" defer></script>
+<script src="js/timer.js" defer></script>
+<script src="js/progress.js" defer></script>
+<script src="js/app.js" defer></script>
+
+<!-- Minimal inline nav so the shell is clickable/testable before app.js exists -->
+<script>
+  document.querySelectorAll('.nav-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = btn.getAttribute('data-target');
+      document.querySelectorAll('.screen').forEach(function (s) {
+        s.hidden = s.dataset.screen !== target;
+      });
+      document.querySelectorAll('.nav-btn').forEach(function (b) {
+        b.classList.toggle('is-active', b === btn);
+      });
+    });
+  });
+</script>
+</body>
+</html>
