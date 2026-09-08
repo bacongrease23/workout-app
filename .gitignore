@@ -1,0 +1,8 @@
+# Personal/private notes — never commit these
+PRIVATE_NOTES.md
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
+node_modules/
+*.log
